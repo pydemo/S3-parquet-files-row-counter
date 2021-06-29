@@ -1,26 +1,3 @@
-import os, sys, csv, time, logging
-import datetime as dt
-from  datetime import datetime
-import decimal
-from os.path import split, join, isdir, basename, isfile
-from pprint import pprint as pp
-from cli_layer.utils import timer, get_err
-from pathlib import Path
-from cli_layer.common import *
-from cli_layer.fmt import  pfmt, pfmtv, pfmtd, psql
-from cli_layer.pipeline.S3.dir.parquet.row.async_counter_ import usage
-#import cli_layer.pipeline.S3.utils as ppl_utils
-from cli_layer.pipeline.utils import get_params
-
-e=sys.exit
-
-log = logging.getLogger()
-
-
-import cli_layer.config.app_config as app_config
-apc = app_config.apc
-
-
 import os, time
 import asyncio
 from itertools import chain
@@ -122,43 +99,11 @@ async def go(bucket: str, prefix: str) -> List[dict]:
     contents = [c.result() for c in contents]
     return list(chain.from_iterable(contents))
 
-
-
-
-
-def S3_dir_parquet_row_async_counter():
-    s = time.perf_counter()
-    _loop = asyncio.get_event_loop()
-    _result = _loop.run_until_complete(go('vydia-data', 'etl2/stats_raw/apple/analytics_api/bydate/api1x0_vc2x0_ds1x0/20210330/'))
-    #print(1111,_result)
-    assert not 'N/A' in _result, _result
-    print('Total:', sum(_result))
-    elapsed = time.perf_counter() - s
-    print(f"{__file__} executed in {elapsed:0.2f} seconds.")
-
-@timer (basename(__file__))
-def main(**kwargs):
-    """	 
-    Location	 : S3\dir\parquet\row\async_counter	
-    Params : 
-                "s3_loc" - param 0
-        "file_filter" - param 1
-    Num of params: 2
-    Usage: python cli.py -nop 1 -r DEV -p S3\dir\parquet\row\async_counter -pa s3_loc file_filter
-    """
-    
-    usage(**kwargs)
-    cp, params=get_params(**kwargs)
-    limit	= kwargs['lame_duck']
-    s3_loc,file_filter = params
-    #apc.setConnName(conn_name)
-    loc=locals()
-    out=dict()
-    for par in 's3_loc,file_filter'.split(','): out[par]=loc[par] 
-    pfmtv(out,'',['Parameter', 'Value'])	
-
-    S3_dir_parquet_row_async_counter()
-
-
-
-    
+s = time.perf_counter()
+_loop = asyncio.get_event_loop()
+_result = _loop.run_until_complete(go('test-data', 'all/files/20210330/'))
+#print(1111,_result)
+assert not 'N/A' in _result, _result
+print('Total:', sum(_result))
+elapsed = time.perf_counter() - s
+print(f"{__file__} executed in {elapsed:0.2f} seconds.")
