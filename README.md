@@ -11,7 +11,7 @@ Count rows in all parquet files using S3 SELECT
 
 ## Execute
 
-```python s3_count.py```
+```python s3_row_counter.py```
 
 ## Output
 
