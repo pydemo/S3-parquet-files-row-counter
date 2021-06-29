@@ -33,7 +33,7 @@ Count rows in all parquet files using S3 SELECT
 **Total rows: 35834**
 
 
-## Async counter
+# Async counter
 
 ```python async_counter.py```
 
