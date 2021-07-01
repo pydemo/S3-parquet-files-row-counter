@@ -20,24 +20,25 @@ _NUM_WORKERS = 50
 bucket_name= 'test-data'
 bucket_prefix= 'etl2/test0/f__app
 
+        
 async def save_to_file(s3_client, bucket: str, key: str):
         
-        response = await s3_client.get_object(Bucket=bucket, Key=key)
-        async with response['Body'] as stream:
-            content = await stream.read() 
-        
-        if 1:
-            fn =f'out/downloaded/{bucket_name}/{key}'
+    response = await s3_client.get_object(Bucket=bucket, Key=key)
+    async with response['Body'] as stream:
+        content = await stream.read() 
+    
+    if 1:
+        fn =f'out/downloaded/{bucket_name}/{key}'
 
-            dn= os.path.dirname(fn)
-            if not isdir(dn):
-                os.makedirs(dn,exist_ok=True)
-            if 1:
-                with open(fn, 'wb') as fh:
-                    fh.write(content)
-                    print(f'Downloaded to: {fn}')
-       
-        return [0]
+        dn= os.path.dirname(fn)
+        if not isdir(dn):
+            os.makedirs(dn,exist_ok=True)
+        if 1:
+            with open(fn, 'wb') as fh:
+                fh.write(content)
+                print(f'Downloaded to: {fn}')
+   
+    return [0]
 
 async def go(bucket: str, prefix: str) -> List[dict]:
     """
