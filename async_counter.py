@@ -18,7 +18,7 @@ _NUM_WORKERS = 50
 
 
 
-async def get_object(s3_client, bucket: str, key: str, client):
+async def get_line_count(s3_client, bucket: str, key: str, client):
     # Get json content from s3 object
 
     # get object from s3
@@ -69,7 +69,7 @@ async def go(bucket: str, prefix: str) -> List[dict]:
     config = aiobotocore.config.AioConfig(max_pool_connections=_NUM_WORKERS)
     contents = []
     async with session.create_client('s3', config=config) as client:
-        worker_co = partial(get_object, client, bucket)
+        worker_co = partial(get_line_count, client, bucket)
         async with asyncpool.AsyncPool(None, _NUM_WORKERS, 's3_work_queue', logger, worker_co,
                                        return_futures=True, raise_on_join=True, log_every_n=10) as work_pool:
             # list s3 objects using paginator
