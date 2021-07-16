@@ -19,11 +19,7 @@ _NUM_WORKERS = 50
 
 
 async def get_line_count(s3_client, bucket: str, key: str, client):
-    # Get json content from s3 object
 
-    # get object from s3
-
-    #print(bucket, key)
     sql_stmt 	= """SELECT count(*) FROM s3object S"""  
     #print(rid)
     colsep=','
