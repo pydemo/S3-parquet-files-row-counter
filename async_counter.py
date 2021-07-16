@@ -22,35 +22,35 @@ async def get_line_count(s3_client, bucket: str, key: str, client):
     # Get json content from s3 object
 
     # get object from s3
-    if 1:
-        #print(bucket, key)
-        sql_stmt 	= """SELECT count(*) FROM s3object S"""  
-        #print(rid)
-        colsep=','
 
-        
-        req_fact = await client.select_object_content(
-            Bucket	= bucket,
-            Key		= key,
-            ExpressionType	= 'SQL',
-            Expression		= sql_stmt,
-            InputSerialization={'Parquet': {}},
-            OutputSerialization = {'CSV': {
-                        'RecordDelimiter': os.linesep,
-                        'FieldDelimiter': colsep}},
-        ) 
+    #print(bucket, key)
+    sql_stmt 	= """SELECT count(*) FROM s3object S"""  
+    #print(rid)
+    colsep=','
 
-        async for event in req_fact['Payload']:
-            
-            if 'Records' in event:
-                rr=event['Records']['Payload'].decode('utf-8')
-                for i, rec in enumerate(rr.split(os.linesep)):
-                    if rec:
-                        row=rec.split(colsep)
-                        if row:
-                            print('File line count:', row[0], key)
-                            #await counts_queue.put(row)
-                            return [int(row[0])]
+
+    req_fact = await client.select_object_content(
+        Bucket	= bucket,
+        Key		= key,
+        ExpressionType	= 'SQL',
+        Expression		= sql_stmt,
+        InputSerialization={'Parquet': {}},
+        OutputSerialization = {'CSV': {
+                    'RecordDelimiter': os.linesep,
+                    'FieldDelimiter': colsep}},
+    ) 
+
+    async for event in req_fact['Payload']:
+
+        if 'Records' in event:
+            rr=event['Records']['Payload'].decode('utf-8')
+            for i, rec in enumerate(rr.split(os.linesep)):
+                if rec:
+                    row=rec.split(colsep)
+                    if row:
+                        print('File line count:', row[0], key)
+                        #await counts_queue.put(row)
+                        return [int(row[0])]
                                 
     return ['N/A']
 
