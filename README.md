@@ -25,7 +25,7 @@ Count rows in all parquet files using S3 SELECT
 	File line count: 31
 	File line count: 8023
 	File line count: 27715
-	**Total rows: 35834**
+	-->Total rows: 35834
 	s3_count.py executed in 1.19 seconds.
 	
 ## Total
